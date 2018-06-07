@@ -1,0 +1,122 @@
+{% extends "case_base.html" %}
+{% block title %}
+    <title>
+        FAQ
+    </title>
+{% endblock %}
+{% block head %}
+    <link href="/static/css/pages/faq.css" rel="stylesheet"/>
+    <script src="/static/js/faq.js"></script>
+{% endblock %}
+
+{% block div %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="page-title">
+            <i class="icon-pushpin"></i>
+            常见操作问题
+        </h2>
+        <div class="widget">
+            <div class="widget-content">
+                <h3>搜索...</h3>
+                <ol class="faq-list">
+                    <li>
+                        <h4>内网开发机服务启动命令</h4>
+                        <p>
+                            禅道重启<br/>
+                            sh /apps/sh/php-fpm.sh
+                            restart
+                            <br/>sh /apps/sh/nginx.sh
+                            restart</p>
+                        <p>
+                            jenkins启动：  <br/>
+                            nohup java -Dhudson.util.ProcessTree.disable=true -jar /apps/src/jenkins.war  --httpPort=8090 &  <br/>
+                            admin admin  <br/>
+
+                            centos7 添加端口：  <br/>
+                            firewall-cmd --zone=public --add-port=8091/tcp --permanent  <br/>
+                            firewall-cmd --reload  <br/>
+
+                            202:  <br/>
+                            rabbitMq:  <br/>
+                            sh /apps/sh/rabbitmq.sh  <br/>
+                            start  <br/>
+
+                            201:  <br/>
+                            redis：  <br/>
+                            /apps/redis-4.0.2/src/redis-server &  <br/>
+                            /apps/redis-4.0.2-bdd/src/redis-server /apps/redis-4.0.2-bdd/redis.conf &  <br/>
+
+                            elasticsearch:   <br/>
+                            su - apps /apps/es/elasticsearch-5.2.2/bin/elasticsearch &  <br/>
+                            su - apps /apps/es/elasticsearch-5.2.2-bdd/bin/elasticsearch &  <br/>
+                            tomcat:  <br/>
+                            /apps/tomcat/tomcat-search/bin/startup.sh   <br/>
+                            /apps/tomcat/tomcat-search-bdd/bin/startup.sh   <br/>
+                            /apps/tomcat/tomcat-crapApi/bin/startup.sh   <br/>
+                            /apps/tomcat/tomcat-bdd_shop/restart.sh   <br/>
+
+                            nginx:  <br/>
+                            /apps/nginx/nginx/sbin/nginx  <br/>
+                        </p>
+                    </li>
+
+                    <li>
+                        <h4>linux 查找项目路径</h4>
+                        <p>ps -ef|grep tomcat, (tomcat为参数)</p>
+                    </li>
+
+                    <li>
+                        <h4>自动化测试辅助命令</h4>
+                        <p>1.获取要测试的apk包的相关信息，比如
+                        aapt dump badging<br/>
+                        2.对某个手机执行卸载、安装及启动应用的操作
+                        adb uninstall
+                        adb install
+                        adb shell monkey -p -v 1<br/>
+                        3.获取手机所有控件信息，为后面执行操作做准备
+                        adb shell uiautomator dump /sdcard/ui.xml<br/>
+                        4.实现对具体坐标的点击操作
+                        adb shell input tap x y<br/>
+                        5.获取手机应用执行时的logcat日志：
+                        adb logcat | grep adb shell ps | grep < package > | cut -c10-15<br/>
+                        6.获取应用执行时的CPU、内存等相关信息
+                        adb shell top -n -1 | grep package
+                        adb shell dumpsys meminfo package </p>
+                    </li>
+
+                    <li>
+                        <h4>Redis 集群缓存测试要点--关于 线上 token 失效 BUG 的总结</h4>
+                        <p>在测试账户系统过程中遇到了线上大面积用户登录态失效的严重问题，事后对于其原因及测试盲点做了一些总结记录以便以后查阅，总结分为以下7点，其中原理性的解释有些摘自网络。<br/>
+                            1.账户系统token失效问题复盘<br/>
+                            2.Redis 经典流程<br/>
+                            3.Redis分片部署方式<br/>
+                            4.Redis扩容导致缓存数据失效<br/>
+                            5.Redis Sharding一致性hash算法<br/>
+                            6.缓存失效，缓存击穿，缓存穿透<br/>
+                            7.Redis缓存测试总结<br/>
+                            账户系统token失效问题复盘
+                            现象：redis扩容后线上大量用户登录态失效，需要重新登录。由于登录态可以持续保持，部分用户忘记密码，需要修改密码后再次登录。在测试验证中，由于切换环境、登录登出导致这个问题难以发现和注意。
+                            原因：sharded-redis-pool分片规则中有域名因子（框架源码中），扩容修改了redis域名，导致redis中数据虽然存在，概率性获取不到。
+                            PS：失效问题复盘中有较多关于BUG修复前后代码差异的片段由于保密未贴出，一般来说测试复盘过程中对于代码的解析是很重要的一环。</p>
+                        <p>Redis分片部署方式<br/>
+                            （1）在客户端(jedis)做分片(Redis Sharding)；这种方式在客户端确定要连接的redis实例，然后直接访问相应的redis实例（目前系统使用的方式）。<br/>
+                            （2）在代理中做分片；这种方式中，客户端并不直接访问redis实例，它也不知道自己要访问的具体是哪个redis实例，而是由代理转发请求和结果；其工作过程为：客户端先将请求发送给代理，代理通过分片算法确定要访问的是哪个redis实例，然后将请求发送给相应的redis实例，redis实例将结果返回给代理，代理最后将结果返回给客户端。<br/>
+                            （3）在redis服务器端做分片(Redis Cluster)；这种方式被称为“查询路由”，在这种方式中客户端随机选择一个redis实例发送请求，如果所请求的内容不再当前redis实例中它会负责将请求转交给正确的redis实例，也有的实现中，redis实例不会转发请求，而是将正确redis的信息发给客户端，由客户端再去向正确的redis实例发送请求。<br/>
+                            Redis扩容导致缓存数据失效
+                            假设有三台缓存服务器，缓存tokenkey，希望tokenkey被均匀的缓存到这三台服务器上，原始的做法是对缓存项的键进行哈希，将哈希后的结果对缓存服务器的数量进行取模操作。</p>
+                    </li>
+
+
+                </ol>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+     <script type="text/javascript">
+        $(function(){
+            $(".faq-list").goFaq();
+        });
+     </script>
+{% endblock %}

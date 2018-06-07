@@ -1,0 +1,23 @@
+---
+bdd-admin:
+  Host: http://bddtest.hlb.ltd/jsp/bdd-admin/login.jsp
+  Port: 8080
+  Path: "/"
+  LoginPhone: 13926175078
+  Password: 123456
+Mysql:
+  Type: mysql
+  Host: 219.129.237.29
+  Port: 3306
+  User: db_b_shop
+  Passwd: db_b_shop
+  DB: zentao
+  ssh_port: 22
+  ssh_username: apps
+  ssh_password: ZXCuio@)!&hlb
+bdd-supplier:
+  Host: http://bddtest.hlb.ltd/jsp/bdd-admin/login.jsp
+  Port: 8080
+  Path: "/"
+  LoginPhone: 11111111111
+  Password: 123456

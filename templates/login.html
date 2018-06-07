@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+        {% block head %}
+			<div class="nav-collapse">
+			
+				<ul class="nav pull-right">
+					
+					<li class="">
+						
+						<a href="/login/"><i class="icon-chevron-left"></i> 返回至首页</a>
+					</li>
+				</ul>
+				
+			</div> <!-- /nav-collapse -->
+		{% endblock %}
+
+{% block body %}
+<div id="login-container">
+	
+	
+	<div id="login-header">
+		
+		<h3>登录页面</h3>
+		
+	</div> <!-- /login-header -->
+	
+	<div id="login-content" class="clearfix">
+	
+	<form action="/index/" method="post"/>
+        {% csrf_token %}
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label" for="username">用户名</label>
+						<div class="controls">
+							<input type="text" class="" id="username" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="password">密码</label>
+						<div class="controls">
+							<input type="password" class="" id="password" />
+						</div>
+					</div>
+				</fieldset>
+				
+				<div id="remember-me" class="pull-left">
+					<input type="checkbox" name="remember" id="remember" />
+					<label id="remember-label" for="remember">记住我</label>
+				</div>
+				
+				<div class="pull-right">
+					<button type="submit" class="btn btn-warning btn-large">
+						登录
+					</button>
+				</div>
+			</form>
+			
+		</div> <!-- /login-content -->
+		
+
+	
+</div> <!-- /login-wrapper -->
+{% endblock %}
+

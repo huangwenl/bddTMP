@@ -1,0 +1,20 @@
+---
+bdd-Interface:
+  Host: https://testfenrun.buydodo.com
+  Port: 8080
+  Path: XXXXXX
+
+payOrder-Interface:
+
+  Path: /controller/orderPayTest/pay
+#   Path: /controller/role/getUsers?pageCount=1&roleId=0&loginphone=13926175077&channelId=11510000000000
+
+TerminaldealerRegister-Interface:
+
+  Path: /controller/app/login/regisuserMD5
+
+SendMessage-Interface:
+
+  Path: /controller/app/short/sendshortmsg
+
+

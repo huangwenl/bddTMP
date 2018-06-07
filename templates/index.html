@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+	{% block head %}
+			<div class="nav-collapse">
+			
+				<ul class="nav pull-right">
+					<li>
+						<a href="#"><span class="badge badge-warning">7</span></a>
+					</li>
+					
+					<li class="divider-vertical"></li>
+					
+					<li class="dropdown">
+						
+						<a data-toggle="dropdown" class="dropdown-toggle " href="#">
+							Rod Howard <b class="caret"></b>							
+						</a>
+						
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./account.html"><i class="icon-user"></i> Account Setting  </a>
+							</li>
+							
+							<li>
+								<a href="./change_password.html"><i class="icon-lock"></i> Change Password</a>
+							</li>
+							
+							<li class="divider"></li>
+							
+							<li>
+								<a href="./"><i class="icon-off"></i> Logout</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				
+			</div> <!-- /nav-collapse -->
+	{% endblock %}
+
+{% block body %}
+<div id="content">
+	
+	<div class="container">
+		
+		<div class="row">
+			
+			<div class="span3">
+				
+				<div class="account-container">
+				
+					<div class="account-avatar">
+						<img src="/static/img/default.png" alt="" class="thumbnail" />
+					</div> <!-- /account-avatar -->
+				
+					<div class="account-details">
+					
+						<span class="account-name">skyhuang</span>
+						
+						<span class="account-role">管理员</span>
+						
+						<span class="account-actions">
+							<a href="javascript:;">个人中心</a> |
+							
+							<a href="javascript:;">设置</a>
+						</span>
+					
+					</div> <!-- /account-details -->
+				
+				</div> <!-- /account-container -->
+				
+				<hr />
+				
+				<ul id="main-nav" class="nav nav-tabs nav-stacked">
+					
+					<li class="active">
+						<a href="./">
+							<i class="icon-home"></i>
+							测试用例
+						</a>
+					</li>
+
+					<li>
+						<a href="./faq.html">
+							<i class="icon-pushpin"></i>
+							常见FAQ
+						</a>
+					</li>
+
+					<li>
+						<a href="./plans.html">
+							<i class="icon-th-list"></i>
+                            数据小站
+						</a>
+					</li>
+
+					<li>
+						<a href="./grid.html">
+							<i class="icon-th-large"></i>
+							环境账号信息
+							<span class="label label-warning pull-right">5</span>
+						</a>
+					</li>
+
+{#					<li>#}
+{#						<a href="./charts.html">#}
+{#							<i class="icon-signal"></i>#}
+{#							Charts	#}
+{#						</a>#}
+{#					</li>#}
+{#					#}
+{#					<li>#}
+{#						<a href="./account.html">#}
+{#							<i class="icon-user"></i>#}
+{#							User Account							#}
+{#						</a>#}
+{#					</li>#}
+{#					#}
+{#					<li>#}
+{#						<a href="./login.html">#}
+{#							<i class="icon-lock"></i>#}
+{#							Login	#}
+{#						</a>#}
+{#					</li>#}
+					
+				</ul>	
+				
+{#				<hr />#}
+{#				<br />#}
+		
+			</div> <!-- /span3 -->
+			
+			
+			
+			<div class="span9">
+				
+				<h1 class="page-title">
+					<i class="icon-home"></i>
+					测试用例页面
+				</h1>
+				
+				<div class="stat-container">
+										
+					<div class="stat-holder">						
+						<div class="stat">							
+							<span>564</span>							
+							总共用例数
+						</div> <!-- /stat -->						
+					</div> <!-- /stat-holder -->
+					
+					<div class="stat-holder">						
+						<div class="stat">							
+							<span>423</span>							
+							已执行用例数
+						</div> <!-- /stat -->						
+					</div> <!-- /stat-holder -->
+					
+					<div class="stat-holder">						
+						<div class="stat">							
+							<span>96</span>							
+							未执行用例数
+						</div> <!-- /stat -->						
+					</div> <!-- /stat-holder -->
+					
+					<div class="stat-holder">						
+						<div class="stat">							
+							<span>92.05%</span>
+							执行率
+						</div> <!-- /stat -->						
+					</div> <!-- /stat-holder -->
+					
+				</div> <!-- /stat-container -->
+
+				<div class="widget widget-table">
+										
+					<div class="widget-header">
+						<i class="icon-th-list"></i>
+						<h3>详细用例</h3>
+					</div> <!-- /widget-header -->
+					
+					<div class="widget-content">
+					
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>用例编号</th>
+									<th>项目</th>
+									<th>模块</th>
+									<th>详细用例</th>
+{#                                    <th>上传者</th>#}
+									<th>执行操作</th>
+                                    <th>执行者</th>
+								</tr>
+							</thead>
+							
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>惠龙邦1.0</td>
+									<td>购买流程</td>
+									<td>接口详细用例,接口详细用例,接口详细用例,接口详细用例,接口详细用例,接口详细用例,接口详细用例,接口详细用例</td>
+{#									<td>skyhuang</td>#}
+                                    <td class="action-td">
+										<a href="javascript:;" class="btn btn-small btn-warning">
+											<i class="icon-ok"></i>								
+										</a>					
+										<a href="javascript:;" class="btn btn-small">
+											<i class="icon-remove"></i>						
+										</a>
+									</td>
+                                    <td>huangwenliang</td>
+								</tr>
+
+                                <tr>
+                                    <td>2</td>
+                                    <td>惠龙邦1.0</td>
+                                    <td>购买流程</td>
+                                    <td>tring.index(str, beg=0,end=len(string)) 跟 find()方法一样，只不过如果 str 不在 string 中会报一个异常</td>
+{#                                    <td>skyhuang</td>#}
+                                    <td class="action-td">
+                                        <a href="javascript:;" class="btn btn-small btn-warning">
+                                            <i class="icon-ok"></i>
+                                        </a>
+                                        <a href="javascript:;" class="btn btn-small">
+                                            <i class="icon-remove"></i>
+                                        </a>
+                                    </td>
+                                    <td>sky</td>
+								</tr>
+						</table>
+					
+					</div> <!-- /widget-content -->
+					
+				</div> <!-- /widget -->
+			</div> <!-- /span9 -->
+			
+			
+		</div> <!-- /row -->
+		
+	</div> <!-- /container -->
+	
+</div> <!-- /content -->
+{% endblock %}
+	
+

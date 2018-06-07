@@ -1,0 +1,247 @@
+{% extends "case_base.html" %}
+
+    {% block title %}
+        <title>测试用例页面</title>
+    {% endblock %}
+
+    {% block body%}
+        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLable">
+            <div class="modal-dialog" role="document" style="width:400px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel2">执行</h4>
+                    </div>
+                     <form id="form-add-data2" role="form">
+                        {% csrf_token %}
+                        <div class="modal-body" style="height: 60px">
+                               <div class="col-md-8 col-sm-offset-2 text-center" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input type="checkbox" id="success" value="0" name="success"> 成功
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input type="checkbox" id="skip" value="2" name="skip"> 跳过
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input type="checkbox" id="fail" value="1" name="fail"> 失败
+                                    </label>
+                                </div>
+                        </div>
+                         <div class="modal-footer" style="height: 60px">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                                    class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                            </button>
+                            <button type="button" id="btn_submit2" class="btn btn-primary" data-dismiss="modal"><span
+                                    class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                            </button>
+                         </div>
+                     </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLable">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">新增</h4>
+                </div>
+                <form id="form-add-data" role="form">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" name="id" class="form-control" id="txt_id">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_project">项目名称</label>
+                            <input type="text" name="project" class="form-control" id="txt_project" placeholder="项目名称">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_model">模块名</label>
+                            <input type="text" name="model" class="form-control" id="txt_model" placeholder="模块名">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_case">用例</label>
+                            <input type="text" name="case" class="form-control" id="txt_case" placeholder="用例">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                                class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                        </button>
+                        <button type="button" id="btn_submit2" class="btn btn-primary" data-dismiss="modal"><span
+                                class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+        {% block div %}
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+{#              <h2 class="page-header">详细用例</h2>#}
+                <h2 class="page-title">
+                    <i class="icon-th-large"></i>
+                    详细用例
+                </h2>
+              <form>
+                <div class="form-inline">
+                    <label class="control-label">详细用例: &nbsp</label><input class="form-control" type="text"
+                                                                          name="input_case" id="input_case"
+                                                                          placeholder="Enter Case"/>
+                    <input type="submit" id="queryByCase" value="查询" class="btn btn-default "/>
+                    &nbsp&nbsp<a class="btn btn-primary" id="btn_addcase">添加</a>
+                    &nbsp&nbsp&nbsp<a onclick="GetCkboxValues()" class="btn btn-danger">批量操作</a>
+                </div>
+              </form>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th><input type="checkbox" id="checkAll" name="subBox" value="">用例编号</th>
+                      <th>项目名称</th>
+                      <th>模块名</th>
+                      <th>用例</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for d in data %}
+                        <tr {% if forloop.counter|divisibleby:"2" %} class="active" {% else %} class="success"  {% endif %}>
+                            <td><input type="checkbox" name="subBox" value="{{ d.id }}">{{ d.id }}</td>
+                            <td>{{ d.project }}</td>
+                            <td>{{ d.modelName }}</td>
+                            <td>{{ d.caseDetail }}</td>
+                            <td>
+                                <div class="btn-group">
+                                        {% if d.result == 0%}
+                                            <button type="button" class="btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span id="{{ d.caseId }}" onclick="func(this.id)">成功</span>
+                                                <span class="caret"></span>
+                                            </button>
+                                        {% elif d.result == 1%}
+                                            <button type="button" class="btn btn-danger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span id="{{ d.caseId }}" onclick="func(this.id)">失败</span>
+                                                <span class="caret"></span>
+                                            </button>
+                                        {% elif d.result == 2%}
+                                            <button type="button" class="btn btn-warning" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span id="{{ d.caseId }}" onclick="func(this.id)">跳过</span>
+                                                <span class="caret"></span>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span id="{{ d.caseId }}" onclick="func(this.id)">操作</span>
+                                                <span class="caret"></span>
+                                            </button>
+                                        {% endif %}
+                                    <ul id="ul{{ d.caseId }}" class="dropdown-menu" >
+                                        <li><a href="/readcase/executecase/?caseid={{ d.id }}&statu=0">成功</a></li>
+                                        <li><a href="/readcase/executecase/?caseid={{ d.id }}&statu=1">失败</a></li>
+                                        <li><a href="/readcase/executecase/?caseid={{ d.id }}&statu=2">跳过</a></li>
+                                    </ul>
+                                </div>&nbsp&nbsp
+    {#                            <a href="javascript:void(0);" class="btn btn-primary" id="btn_updatecase">修改</a>#}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+              <nav aria-label="Page navigation" style="text-align: center">
+                  <ul class="pagination">
+                      {% if data.has_previous %}
+                          <li>
+                              <a href="?page={{ data.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                          </li>
+                      {% endif %}
+
+                    {% for pg in data.paginator.page_range %}
+                        {% if data.number == pg %}
+                            <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+                          {% else %}
+                            <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+                          {% endif %}
+                    {% endfor %}
+
+                    {% if data.has_next %}
+                        <li>
+                          <a href="?page={{ data.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                    {% endif %}
+                  </ul>
+                </nav>
+
+              </div>
+            </div>
+            {% endblock %}
+
+
+
+{% block script %}
+<script type="text/javascript">
+        function func(id) {
+         $("#ul"+id).on("click",function(e){
+            var $target = $(e.target);
+            $("#"+id).text($target.text())
+        })
+        };
+    //注册添加按钮的事件
+    $("#btn_addcase").click(function () {
+        $("#myModalLabel").text("新增");
+        $('#myModal').modal();
+    });
+
+    $(function () {
+        $("#checkAll").click(function () {
+            //不知为何$('input[name="subBox"]').attr("checked",this.checked);不行
+            var allvalue = document.getElementsByName('subBox');
+            for (var i = 0; i < allvalue.length; i++) {
+                if (allvalue[i].type == "checkbox")
+                    allvalue[i].checked = this.checked;  //遍历所有subBox，设置为主checkbox属性
+            }
+        });
+        var $subBox = $("input[name='subBox']");
+        $subBox.click(function () {//当点击subBox时，将主checkbox设置为false（通过检测是否全选）
+            $("#checkAll").attr("checked", $subBox.length == $("input[name='subBox']:checked").length ? true : false);
+        });
+    });
+
+    function GetCkboxValues() {
+        var arr = new Array() //通过数组列表保存所有case id，实现批量修改功能
+        $("input:checkbox:checked").each(function () {
+            arr.push($(this).val())
+        });
+        if (arr == "") {//没有选择的条件下做出弹窗提示
+            alert("请勾选用例编号")
+        }else {
+            $('#myModal2').modal();
+            $("#btn_submit2").click(function () {
+            var form_data = $('#form-add-data2').serialize();
+            var data=decodeURIComponent(form_data, true)+"&arr="+arr;
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+            });
+            $.ajax({
+                url: "/readcase/executecase/",
+                type: "post",
+                data: {"data": data},
+                success: function (data) {
+                    if (data == 0) {
+                        alert("批量操作失败!请刷新重新操作!")
+                    }
+                }
+            });
+        })
+        };
+    };
+</script>
+{% endblock %}

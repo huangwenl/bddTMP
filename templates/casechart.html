@@ -1,0 +1,140 @@
+{% extends "case_base.html" %}
+
+{% block title %}
+    <title>用例统计页面</title>
+{% endblock %}
+{% block head %}
+    <script src="/static/js/charts/Chart.js"></script>
+    <script src="/static/js/charts/Chart.Bubble.js"></script>
+    <script src="/static/js/charts/utils.js"></script>
+    <style>
+        canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+{% endblock %}
+{% block div %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+{#    <h2 class="page-header">用例执行情况</h2>#}
+      <h2 class="page-title">
+            <i class="icon-signal"></i>
+                用例执行情况
+      </h2>
+    <form action="/readcase/casechart/" method="get" role="form">
+        <div class="form-inline">
+            <label class="control-label">项目名称: &nbsp</label><input class="form-control" type="text"
+                                                                   name="input_project" id="input_project"
+                                                                   placeholder="Enter ProjectName"/>
+            <input type="submit" id="queryByProject" value="查询" class="btn btn-default "/>
+        </div>
+    </form>
+    <p></p>
+    <table class="table table-bordered form-inline" align="center">
+        <thead>
+        <tr>
+            <th>项目</th>
+            <th>模块</th>
+            <th>用例总数</th>
+            <th>执行成功数</th>
+            <th>跳过总数</th>
+            <th>执行失败数</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for d in data %}
+            <tr {% if forloop.counter|divisibleby:"2" %} class="active" {% else %}
+                                                         class="success"  {% endif %}>
+                <td>{{ d.projectName }}</td>
+                <td>{{ d.modelName }}</td>
+                <td>{{ d.casetotal }}</td>
+                <td>{{ d.success }}</td>
+                <td>{{ d.skip }}</td>
+                <td>{{ d.fail }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tr>
+            <th>总计</th>
+            <th></th>
+            <th id="cases_total">{{ re_total.cases_total }}</th>
+            <th id="success_total">{{ re_total.success_total }}</th>
+            <th id="skip_total">{{ re_total.skip_total }}</th>
+            <th id="fail_total">{{ re_total.fail_total }}</th>
+        </tr>
+    </table>
+    <p></p>
+    <p></p>
+    <p></p>
+    <div class="chart-container" style="position: relative; left:400px;height:10vh; width:20vw">
+        <canvas id="myChart" width="200" height="200"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+{#    var randomScalingFactor = function() {#}
+{#        return Math.round(Math.random() * 100);#}
+{#    };#}
+    var cases_total = $("#cases_total").text();
+    var success_total = $("#success_total").text();
+    var skip_total = $("#skip_total").text();
+    var fail_total = $("#fail_total").text();
+
+    var config = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [
+                    skip_total/cases_total*100,
+                    fail_total/cases_total*100,
+                    success_total/cases_total*100,
+{#                    randomScalingFactor(),#}
+{#                    randomScalingFactor(),#}
+                ],
+                backgroundColor: [
+                    window.chartColors.red,
+{#                    window.chartColors.orange,#}
+                    window.chartColors.yellow,
+                    window.chartColors.green,
+{#                    window.chartColors.blue,#}
+                ],
+                label: 'Dataset 1'
+            }],
+            labels: [
+                "执行失败率",
+{#                "Orange",#}
+                "执行跳过率",
+                "执行成功率",
+{#                "Blue"#}
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: '执行率',
+                fontSize:16
+
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            },
+            tooltips: {
+
+        }
+        }
+    };
+    window.onload = function() {
+        var ctx = document.getElementById("myChart").getContext("2d");
+        window.myDoughnut = new Chart(ctx, config);
+    };
+</script>
+{% endblock %}

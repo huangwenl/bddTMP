@@ -1,0 +1,258 @@
+{% extends "case_base.html" %}
+{% load staticfiles %}
+
+
+{% block title %}
+    <title>账号信息页面</title>
+{% endblock %}
+
+{% block body %}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLable">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <form id="form-add-data" role="form">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" name="id" class="form-control" id="txt_id">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_env">环境</label>
+                        <input type="text" name="env" class="form-control" id="txt_env" placeholder="环境">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_channel">频道</label>
+                        <input type="text" name="channel" class="form-control" id="txt_channel" placeholder="频道">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_role">角色</label>
+                        <input type="text" name="role" class="form-control" id="txt_role" placeholder="角色">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_phone">账号</label>
+                        <input type="text" name="phone" class="form-control" id="txt_phone" placeholder="账号">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_password">密码</label>
+                        <input type="text" name="password" class="form-control" id="txt_password" placeholder="密码">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block div%}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+{#            <h2 class="page-header">账号数据</h2>#}
+            <h2 class="page-title">
+                    <i class="icon-th-large"></i>
+                    账号数据
+            </h2>
+            <div class="table-responsive">
+                <form action="/testenvData/query/" method="get" role="form">
+                    <div class="form-inline">
+                        <label class="control-label">手机号: &nbsp</label><input class="form-control" type="text"
+                                                                              name="input_phone" id="input_phone"
+                                                                              placeholder="Enter Phone"/>
+                        <input type="submit" id="queryById" value="查询" class="btn btn-default "/>
+                        &nbsp&nbsp<a class="btn btn-primary" id="btn_add">添加</a>
+                        &nbsp&nbsp&nbsp<a onclick="GetCkboxValues()" class="btn btn-danger">批量删除</a>
+                    </div>
+                </form>
+                <p></p>
+                <table class="table table-bordered form-inline" align="center">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="checkbox ">
+                                <label>
+                                    <input type="checkbox" id="checkAll" value="">
+                                </label>
+                            </div>
+                        </th>
+                        <th>环境</th>
+                        <th>频道</th>
+                        <th>角色</th>
+                        <th>账号</th>
+                        <th>密码</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for d in data %}
+                        <tr {% if forloop.counter|divisibleby:"2" %} class="active" {% else %}
+                                                                     class="success"  {% endif %}>
+                            <td>
+                                <input type="checkbox" name="subBox" value="{{ d.id }}">
+                            </td>
+                            <td>{{ d.env }}</td>
+                            <td>{{ d.channle }}</td>
+                            <td>{{ d.role }}</td>
+                            <td>{{ d.phone }}</td>
+                            <td>{{ d.password }}</td>
+                            <td>&nbsp<a href="javascript:void(0);" class="text-danger">删除</a>&nbsp&nbsp
+                                <a href="javascript:void(0);"
+                                   onclick="update('{{ d.id }}','{{ d.env }}','{{ d.channle }}','{{ d.role }}','{{ d.phone }}','{{ d.password }}')">修改</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <!-- 页面导航栏 -->
+{#                <p>#}
+{#                    {% if data.has_previous %}#}
+{#                        <a href="?page={{ data.previous_page_number }}">上一页</a>#}
+{#                    {% endif %}#}
+{#                    data.paginator.number_pages 返回总页数#}
+{#                    第{{ data.number }}页 | 共{{ data.paginator.num_pages }}页#}
+{#                    {% if data.has_next %}#}
+{#                        <a href="?page={{ data.next_page_number }}">下一页</a>#}
+{#                    {% endif %}#}
+{#                </p>#}
+                <nav aria-label="Page navigation" style="text-align: center">
+                  <ul class="pagination">
+                      {% if data.has_previous %}
+                          <li>
+                              <a href="?page={{ data.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                          </li>
+                      {% endif %}
+
+                    {% for pg in data.paginator.page_range %}
+                        {% if data.number == pg %}
+                            <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+                          {% else %}
+                            <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+                          {% endif %}
+                    {% endfor %}
+
+                    {% if data.has_next %}
+                        <li>
+                          <a href="?page={{ data.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                    {% endif %}
+                  </ul>
+                </nav>
+            </div>
+        </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(function () {
+        $("#checkAll").click(function () {
+            //不知为何$('input[name="subBox"]').attr("checked",this.checked);不行
+            var allvalue = document.getElementsByName('subBox');
+            for (var i = 0; i < allvalue.length; i++) {
+                if (allvalue[i].type == "checkbox")
+                    allvalue[i].checked = this.checked;  //遍历所有subBox，设置为主checkbox属性
+            }
+        });
+        var $subBox = $("input[name='subBox']");
+        $subBox.click(function () {//当点击subBox时，将主checkbox设置为false（通过检测是否全选）
+            $("#checkAll").attr("checked", $subBox.length == $("input[name='subBox']:checked").length ? true : false);
+        });
+    });
+
+    function GetCkboxValues() {
+        var arr = new Array() //通过数组列表保存所有用户id，实现批量删除功能
+        $("input:checkbox:checked").each(function () {
+            arr.push($(this).val())
+        });
+        if (arr == "") {//没有选择的条件下做出弹窗提示
+            alert("请选择勾选删除项 ")
+        }else {
+            $.ajax({ //ajax实现GET方式动态加载，为啥POST不行？
+                type: "GET",
+                url: "/testenvData/delSelect/",
+                data: "arr=" + arr,
+                success: function (data) {
+                    //通过模拟点击查询按钮，刷新当前页面
+                    if (data == 200){
+                         alert("删除成功")
+                    }else {
+                        alert("删除失败")
+                    }
+                    $("#queryById").click()
+                }
+            });
+        }
+    };
+    //注册新增按钮的事件
+    $("#btn_add").click(function () {
+        $("#myModalLabel").text("新增");
+        $('#myModal').modal();
+    });
+    $("#btn_submit").click(function () {
+        var dialog_title = $("#myModalLabel").text();
+        if (dialog_title == "新增") {
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+            });
+            var form_data = $('#form-add-data').serialize();
+            $.ajax({
+                url: "/testenvData/addenvdata/",
+                type: "post",
+                data: {"data": decodeURIComponent(form_data, true)},
+                success: function (data) {
+                    if (data == 200) {
+                        alert("新增成功!")
+                    } else {
+                        alert("新增失败!请重新输入")
+                    }
+                }
+            })
+        } else if (dialog_title == "修改") {
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+            });
+            var form_data = $('#form-add-data').serialize();
+            {#            alert(form_data);#}
+            $.ajax({
+                url: "/testenvData/update/",
+                type: "post",
+                data: {"data": decodeURIComponent(form_data, true)},
+                success: function (data) {
+                    if (data == 200) {
+                        alert("修改成功!")
+                    } else {
+                        alert("修改失败!请重新修改")
+                    }
+                }
+            })
+        } else {
+            alert("系统出错！请联系管理员")
+        }
+
+    });
+
+    function update(id, env, channel, role, phone, password) {
+        $("#myModalLabel").text("修改");
+        $("#myModal").modal();
+        $("#txt_id").val(id);
+        $("#txt_env").val(env);
+        $("#txt_channel").val(channel);
+        $("#txt_role").val(role);
+        $("#txt_phone").val(phone);
+        $("#txt_password").val(password);
+    };
+</script>
+{% endblock %}

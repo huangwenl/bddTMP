@@ -1,0 +1,246 @@
+{% extends "case_base.html" %}
+
+{% block title %}
+    <title>服务器信息</title>
+{% endblock %}
+{% block head %}
+    <link href="/static/css/bootstrap-editable.css" rel="stylesheet"/>
+    <link href="/static/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <script src="/static/js/bootstrap-editable.js"></script>
+    <script src="/static/js/bootstrap-table.min.js"></script>
+    <script src="/static/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/static/js/bootstrap-table-editable.js"></script>
+{% endblock %}
+
+{% block div %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+{#        <h2 class="page-header">服务器信息</h2>#}
+        <h2 class="page-title">
+                    <i class="icon-th-large"></i>
+                    服务器信息
+        </h2>
+
+        {#         <div class="panel-body" style="padding-bottom:0px;">#}
+        {#            <div class="panel panel-default">#}
+        {#                <div class="panel-heading">查询条件</div>#}
+        {#                <div class="panel-body">#}
+        {#                    <form id="formSearch" class="form-horizontal">#}
+        {#                        <div class="form-group" style="margin-top:15px">#}
+        {#                            <label class="control-label col-sm-1" for="txt_search_departmentname">部门名称</label>#}
+        {#                            <div class="col-sm-3">#}
+        {#                                <input type="text" class="form-control" id="txt_search_departmentname">#}
+        {#                            </div>#}
+        {#                            <label class="control-label col-sm-1" for="txt_search_statu">状态</label>#}
+        {#                            <div class="col-sm-3">#}
+        {#                                <input type="text" class="form-control" id="txt_search_statu">#}
+        {#                            </div>#}
+        {#                            <div class="col-sm-4" style="text-align:left;">#}
+        {#                                <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                    </form>#}
+        {#                </div>#}
+        {#            </div>#}
+
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+            </button>
+            <button id="btn_edit" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+            </button>
+            <button id="btn_delete" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+            </button>
+        </div>
+        {#        <table id="tb_serverdatas" class="table table-bordered form-inline" align="center">#}
+        {#            <thead>#}
+        {#            <tr>#}
+        {#                <th>#}
+        {#                    <div class="checkbox ">#}
+        {#                        <label>#}
+        {#                            <input type="checkbox" id="checkAll" value="">#}
+        {#                        </label>#}
+        {#                    </div>#}
+        {#                </th>#}
+        {#                <th>环境</th>#}
+        {#                <th>服务器名称</th>#}
+        {#                <th>IP/网址</th>#}
+        {#                <th>端口</th>#}
+        {#                <th>访问用户名</th>#}
+        {#                <th>访问密码</th>#}
+        {#            </tr>#}
+        {#            </thead>#}
+        {#            <tbody>#}
+        {#            {% for d in data %}#}
+        {#                <tr {% if forloop.counter|divisibleby:"2" %} class="active" {% else %}#}
+        {#                                                             class="success"  {% endif %}>#}
+        {#            <tr>#}
+        {#                <td>#}
+        {#                    <input type="checkbox" name="subBox" value="{{ data.id }}">#}
+        {#                </td>#}
+        {#                <td>{{ data.env }}</td>#}
+        {#                <td>{{ data.server }}</td>#}
+        {#                <td><a href="#" id="username">{{ data.ip }}</a></td>#}
+        {#                <td>{{ data.port }}</td>#}
+        {#                <td>{{ data.user }}</td>#}
+        {#                <td>{{ data.password }}</td>#}
+        {#                            <td>&nbsp<a href="javascript:void(0);" class="text-danger">删除</a>&nbsp&nbsp#}
+        {#                                <a href="javascript:void(0);"#}
+        {#                                   onclick="update('{{ d.id }}','{{ d.env }}','{{ d.channle }}','{{ d.role }}','{{ d.phone }}','{{ d.password }}')">修改</a>#}
+        {#                            </td>#}
+        {#            </tr>#}
+        {#            {% endfor %}#}
+        {#            </tbody>#}
+        {#        </table>#}
+        <form>
+            <div class="form-inline">
+                {% csrf_token %}
+                <table id="tb_departments" class="table table-bordered form-inline" align="center"></table>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+
+        {#        $(function () {#}
+        {#            $('#username').editable({#}
+        {#                type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等#}
+        {#                title: "IP地址",              //编辑框的标题#}
+        {#                disabled: false,             //是否禁用编辑#}
+        {#                emptytext: "空文本",          //空值的默认文本#}
+        {#                mode: "inline",              //编辑框的模式：支持popup和inline两种模式，默认是popup#}
+        {#                validate: function (value) { //字段验证#}
+        {#                    if (!$.trim(value)) {#}
+        {#                        return '不能为空';#}
+        {#                    }#}
+        {#                }#}
+        {#            });#}
+        {#        });#}
+
+        $(function () {
+            $("#tb_departments").bootstrapTable({
+                toolbar: "#toolbar",
+                idField: "id",
+                pagination: true,
+                clickToSelect: true,
+                striped: true,
+                pageSize: 15,
+                pageList: [1, 5, 10, 15],
+                clickToSelect: true,
+                url: "/testenvData/query_serverdatas/",
+                method: "get",
+                onEditableSave: function (field, row, oldValue, $el) {
+                    $.ajaxSetup({
+                        data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    });
+                    var data = row.id + "&" + field + "&" + row[field];
+                    $.ajax({
+                        url: "/testenvData/update_serverdatas/",
+                        type: "post",
+                        data: {"data": data},
+                        success: function (data) {
+                            if (data.status == "success") {
+                                alert("编辑成功");
+                            }
+                            else {
+                                alert("编辑失败,请联系管理员");
+                            }
+                        },
+                    });
+                },
+                {#        data: [{#}
+                {#            id: 1,#}
+                {#            name: '张三',#}
+                {#            sex: '男',#}
+                {#            time: '2017-08-09'#}
+                {#        }, {#}
+                {#            id: 2,#}
+                {#            name: '王五',#}
+                {#            sex: '女',#}
+                {#            time: '2017-08-09'#}
+                {#        }],#}
+                columns: [{
+                    field: 'id',
+                    title: '序号'
+                }, {
+                    field: 'env',
+                    title: '环境',
+                    editable: {
+                        type: 'text',
+                        validate: function (value) {
+                            if ($.trim(value) == '') {
+                                return '环境不能为空!';
+                            }
+                        }
+                    }
+                }, {
+                    field: 'ip',
+                    title: 'IP/网址',
+                    editable: {
+                        type: 'text',
+                        emptytext: "空文本",
+                        validate: function (value) {
+                            if ($.trim(value) == '') {
+                                return 'IP/网址不能为空!';
+                            }
+                        }
+                    }
+                }, {
+                    field: 'port',
+                    title: '端口',
+                    editable: {
+                        type: 'text',
+                        emptytext: "空文本",
+                        validate: function (value) {
+                            if ($.trim(value) == '') {
+                                return '端口不能为空!';
+                            }
+                        }
+                    }
+                }, {
+                    field: 'user',
+                    title: '访问用户名',
+                    editable: {
+                        type: 'text',
+                        emptytext: "空文本",
+                        validate: function (value) {
+                            if ($.trim(value) == '') {
+                                return '访问用户名不能为空!';
+                            }
+                        }
+                    }
+                }, {
+                    field: 'password',
+                    title: '访问密码',
+                    editable: {
+                        type: 'text',
+                        emptytext: "空文本",
+                        validate: function (value) {
+                            if ($.trim(value) == '') {
+                                return '访问密码不能为空!';
+                            }
+                        }
+                    }
+                }, {
+                    field: 'isAvailable',
+                    title: '是否在用',
+                    editable: {
+                        type: 'text',
+                    }
+                },{
+                    field: 'time',
+                    title: '更新时间',
+                }]
+            })
+
+            $('#btn_add').click(function(){
+                var data = {};
+                $('#tb_departments').bootstrapTable('append',data);
+            });
+
+        });
+    </script>
+{% endblock %}

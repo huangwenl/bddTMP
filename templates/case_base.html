@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block title %}
+
+    {% endblock %}
+    <link href="/static/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+    <script src="/static/assets/js/ie-emulation-modes-warning.js"></script>
+    <script src="/static/js/jquery-2.2.4.min.js"></script>
+    <script src="/static/dist/js/bootstrap.js"></script>
+    <link href="/static/css/adminia.css" rel="stylesheet"/>
+    <link href="/static/css/adminia-responsive.css" rel="stylesheet"/>
+    <link href="/static/css/font-awesome.css" rel="stylesheet"/>
+    <style>
+        .panel-group{height:auto;overflow: auto;}
+        .leftMenu{margin:0px;margin-top:0px;}
+        .leftMenu .panel-heading{font-size:14px;padding-left:5px;height:36px;line-height:36px;color:white;position:relative;cursor:pointer;}/*转成手形图标*/
+        .leftMenu .panel-heading span{position:absolute;right:10px;top:12px;}
+        .leftMenu .menu-item-left{padding: 6px; background: transparent; border:1px solid transparent;border-radius: 6px;}
+        .leftMenu .menu-item-left:hover{background:#C4E3F3;border:1px solid #1E90FF;}
+    </style>
+    {% block head %}
+    {% endblock %}
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">测试管理平台1.0</a>
+        </div>
+{#        <div id="navbar" class="navbar-collapse collapse">#}
+{#          <ul class="nav navbar-nav navbar-right">#}
+{#            <li><a href="#">用例查询</a></li>#}
+{#          </ul>#}
+{#          <form class="navbar-form navbar-right">#}
+{#            <input type="text" class="form-control" placeholder="Search...">#}
+{#          </form>#}
+{#        </div>#}
+      </div>
+    </nav>
+    {% block body%}
+
+    {% endblock %}
+        <div class="container-fluid">
+          <div class="row">
+{#            <div class="col-sm-3 col-md-2 sidebar">#}
+{#              <ul class="nav nav-sidebar">#}
+{#                <li name="li"><a href="/readcase/upload/">上传用例</a></li>#}
+{#                <li class="active"><a href="/readcase/dashboard/">详细测试用例</a></li>#}
+{#                <li name="li"><a href="/readcase/casechart/">测试用例执行统计</a></li>#}
+{#                <li name="li"><a href="/testenvData/data_manage/">账号信息</a></li>#}
+{#                <li name="li"><a href="#">测试环境信息</a></li>#}
+{#                <li name="li"><a href="#">数据小站</a></li>#}
+{#                <li name="li"><a href="#">接口测试</a></li>#}
+{#                <li name="li"><a href="#">常见FAQ</a></li>#}
+{#              </ul>#}
+{#            </div>#}
+			<div class="col-sm-3 col-md-2 sidebar">
+                <div class="panel-group table-responsive" role="tablist">
+                    <div class="panel panel-primary leftMenu">
+                        <!-- 利用data-target指定要折叠的分组列表 -->
+                        <div class="panel-heading" id="collapseListGroupHeading1" data-toggle="collapse" data-target="#collapseListGroup1" role="tab" >
+                            <h4 class="panel-title">
+                                用例管理
+                                <span class="glyphicon glyphicon-chevron-up right"></span>
+                            </h4>
+                        </div>
+                        <!-- .panel-collapse和.collapse标明折叠元素 .in表示要显示出来 -->
+                        <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                <!-- 利用data-target指定URL -->
+                                <a class="menu-item-left" href="/readcase/upload/">
+                                    <i class="icon-upload"></i>上传用例</a>
+                              </li>
+                              <li class="list-group-item">
+                                   <a class="menu-item-left" href="/readcase/data_manage/">
+                                       <i class="icon-th-large"></i>详细测试用例</a>
+                              </li>
+                              <li class="list-group-item">
+                                   <a class="menu-item-left" href="/readcase/casechart/">
+                                        <i class="icon-signal"></i>测试用例执行统计</a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div><!--panel end-->
+
+
+                    <div class="panel panel-primary leftMenu">
+                        <div class="panel-heading" id="collapseListGroupHeading3" data-toggle="collapse" data-target="#collapseListGroup3" role="tab" >
+                            <h4 class="panel-title">
+                                测试环境信息
+                                <span class="glyphicon glyphicon-chevron-up right"></span>
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading3">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                  <a class="menu-item-left" href="/testenvData/data_manage/">
+                                      <i class="icon-th-large"></i>测试账号信息</a>
+                              </li>
+                              <li class="list-group-item">
+                                  <a class="menu-item-left" href="/testenvData/server_data/">
+                                      <i class="icon-th-large"></i>服务器信息</a>
+                              </li>
+                              <li class="list-group-item">
+                                  <a class="menu-item-left" href="/testenvData/fixedAssets/">
+                                      <i class="icon-th-large"></i>测试机信息</a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary leftMenu">
+                        <div class="panel-heading" id="collapseListGroupHeading2" data-toggle="collapse" data-target="#collapseListGroup2" role="tab" >
+                            <h4 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-up right"></span>
+                                数据小站
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading2">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                    <a class="menu-item-left" href="/testenvData/datastation">
+                                        <i class="icon-th-list"></i>测试数据创建</a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary leftMenu">
+                        <div class="panel-heading" id="collapseListGroupHeading4" data-toggle="collapse" data-target="#collapseListGroup4" role="tab" >
+                            <h4 class="panel-title">
+                                接口测试
+                                <span class="glyphicon glyphicon-chevron-up right"></span>
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading4">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                    <a class="menu-item-left" href="#">
+                                        <i class="icon-check"></i>接口测试配置</a>
+                              </li>
+                              <li class="list-group-item">
+                                    <a class="menu-item-left" href="#">
+                                        <i class="icon-road"></i>接口测试执行</a>
+                              </li>
+                              <li class="list-group-item">
+                                    <a class="menu-item-left" href="#">
+                                        <i class="icon-ban-circle"></i>接口测试报告</a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary leftMenu">
+                        <div class="panel-heading" id="collapseListGroupHeading5" data-toggle="collapse" data-target="#collapseListGroup5" role="tab" >
+                            <h4 class="panel-title">
+                                常见FAQ
+                                <span class="glyphicon glyphicon-chevron-up right"></span>
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading5">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                    <a class="menu-item-left" href="/testenvData/faq">
+                                        <i class="icon-pushpin"></i>杂七杂八汇总</a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                     <div class="panel panel-primary leftMenu">
+                        <div class="panel-heading" id="collapseListGroupHeading6" data-toggle="collapse" data-target="#collapseListGroup6" role="tab" >
+                            <h4 class="panel-title">
+                                Bug统计
+                                <span class="glyphicon glyphicon-chevron-up right"></span>
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading6">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                    <a class="menu-item-left" href="/bugStatistics/bug">
+                                        <i class="icon-signal"></i>各项Bug统计表</a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {% block div %}
+
+            {% endblock %}
+          </div>
+        </div>
+
+
+    <script src="/static/assets/js/vendor/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/assets/js/ie10-viewport-bug-workaround.js"></script>
+	<script>
+        $(function(){
+            $(".panel-heading").click(function(e){
+                /*切换折叠指示图标*/
+                $(this).find("span").toggleClass("glyphicon-chevron-down");
+                $(this).find("span").toggleClass("glyphicon-chevron-up");
+            });
+        });
+    </script>
+    {% block script %}
+    {% endblock %}
+  </body>
+</html>

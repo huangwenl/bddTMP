@@ -1,0 +1,14 @@
+---
+bdd-Interface:
+  Host: https://fenruntest.hlb.ltd
+  Port: 8080
+  Path: XXXXXX
+
+payOrder-Interface:
+
+  Path: /controller/orderPayTest/pay
+
+
+
+
+
