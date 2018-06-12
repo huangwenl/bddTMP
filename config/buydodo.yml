@@ -1,9 +1,9 @@
 ---
 bdd-admin:
-  Host: http://bddtest.hlb.ltd/jsp/bdd-admin/login.jsp
+  Host: http://test.buydodo.com/jsp/bdd-admin/login.jsp
   Port: 8080
   Path: "/"
-  LoginPhone: 13926175078
+  LoginPhone: 11111111111
   Password: 123456
 Mysql:
   Type: mysql
@@ -16,7 +16,7 @@ Mysql:
   ssh_username: apps
   ssh_password: ZXCuio@)!&hlb
 bdd-supplier:
-  Host: http://bddtest.hlb.ltd/jsp/bdd-admin/login.jsp
+  Host: http://test.buydodo.com/jsp/bdd-admin/login.jsp
   Port: 8080
   Path: "/"
   LoginPhone: 11111111111

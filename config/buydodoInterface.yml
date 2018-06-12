@@ -1,6 +1,6 @@
 ---
 bdd-Interface:
-  Host: https://testfenrun.buydodo.com
+  Host: https://test.buydodo.com
   Port: 8080
   Path: XXXXXX
 
