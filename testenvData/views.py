@@ -6,11 +6,15 @@ from django.http import JsonResponse
 import datetime
 from utils.commonTool.httpUtil import HttpUtil
 from utils.commonTool.mySqlUtil import MysqlUtil
+from utils.log.mylog import MyLogger
+
+log = MyLogger()
 
 
 # Create your views here.
 def testenv(request):
     testdata = envdata.objects.all()
+    log.info("查询数据库数据testdata为%s" % testdata)
     datalist = []
     for i in testdata:
         data = {"id": "", "env": "", "channle": "", "role": "", "phone": "", "password": ""}
@@ -28,34 +32,46 @@ def testenv(request):
 def data_manage(request):
     # data_list = envdata.objects.all()
     data_list = envdata.objects.get_queryset().order_by('id')
+    log.info("查询所有测试账号信息%s" % data_list)
     paginator = Paginator(data_list, 10)
     page = request.GET.get("page")
+    log.info("请求分页数据,请求页码为%s" % page)
     try:
         data = paginator.page(page)
+        log.info("请求第%s页数据为%s" % (page, data))
     except PageNotAnInteger:
         data = paginator.page(1)
+        log.info("页码不为数字,强制转成1")
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
+        log.info("EmptyPage")
     return render(request, "testenv.html", {"data": data})
 
 
 def fixedAssets(request):
     datas = mobileInfo.objects.get_queryset().order_by('id')
+    log.info("查询所有测试机信息%s" % datas)
     paginator = Paginator(datas, 10)
     page = request.GET.get("page")
+    log.info("请求分页数据,请求页码为%s" % page)
     try:
         data = paginator.page(page)
+        log.info("请求第%s页数据为%s" % (page, data))
     except PageNotAnInteger:
         data = paginator.page(1)
+        log.info("页码不为数字,强制转成1")
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
+        log.info("EmptyPage")
     return render(request, "fixedAssets.html", {"data": data})
 
 
 def addenvdata(request):
     datas = envdata()
     data = request.POST["data"]
+    log.info("请求添加测试账号信息,请求数据为%s" % data)
     if len(data) < 0:
+        log.info("请求数据为空，直接返回")
         return HttpResponse(0)
     try:
         list = data.split("&")
@@ -68,7 +84,9 @@ def addenvdata(request):
         datas.phone = l[3]
         datas.password = l[4]
         datas.save()
+        log.info("添加保存成功")
     except Exception as e:
+        log.info("保存测试账号信息异常,直接返回")
         return HttpResponse(0)
     else:
         return HttpResponse(200)
@@ -76,15 +94,17 @@ def addenvdata(request):
 
 def update(request):
     data = request.POST.get("data")
+    log.info("请求更新测试账号信息,请求数据为%s" % data)
     if len(data) <= 0:
+        log.info("请求数据为空，直接返回")
         return HttpResponse(0)
     try:
         list = data.split("&")
         l = []
         for i in list[1:]:
             l.append(i.split("=")[1])
-        for i in l:
-            print(i)
+        # for i in l:
+        #     print(i)
         id = l[0]
         env = l[1]
         channle = l[2]
@@ -98,7 +118,9 @@ def update(request):
         data.phone = phone
         data.password = password
         data.save()
+        log.info("更新保存成功")
     except Exception as e:
+        log.info("更新保存测试账号信息异常,直接返回")
         return HttpResponse(0)
     else:
         return HttpResponse(200)
@@ -106,6 +128,7 @@ def update(request):
 
 def delSelect(request):
     arr = request.GET.get("arr")
+    log.info("删除测试账号数据,请求删除数据为%s" % arr)
     arrlist = arr.split(",")
     try:
         for i in arrlist:
@@ -114,7 +137,9 @@ def delSelect(request):
             else:
                 d = envdata.objects.get(id=i)
                 d.delete()
+                log.info("删除成功")
     except Exception as e:
+        log.info("删除测试账号信息异常,直接返回%s" % e)
         return HttpResponse(0)
     else:
         return HttpResponse(200)
@@ -122,9 +147,12 @@ def delSelect(request):
 
 def query(request):
     phone_num = request.GET.get("input_phone", "")
-    if len(phone_num) <= 0:
+    log.info("查询账号信息，输入的要查询的手机号码为%s" % phone_num)
+    if len(phone_num) <= 0 or len(phone_num) >= 11:
+        log.info("查询账号信息，输入的要查询的手机号码为太短或是太长")
         return HttpResponseRedirect("/testenvData/data_manage/")
     datas = envdata.objects.filter(phone__contains=phone_num)
+    log.info("数据库查询的匹配输入的手机号码信息为%s" % datas)
     if len(datas) <= 0:
         return render(request, "testenv.html")
     list = []
